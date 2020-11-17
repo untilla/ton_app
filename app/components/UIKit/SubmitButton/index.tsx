@@ -15,15 +15,24 @@ const SubmitButton: React.FC<ISubmitButtonProps> =
      disabled = false,
      containerStyle = {},
    }): JSX.Element => {
-    const [backgroundColor, setColor] = useState<string>(disabled ? COLOR_DISABLED : COLOR_ACTIVE);
+    const [pressed, setPressed] = useState<boolean>(false);
     return (
       <View style={containerStyle}>
         <TouchableWithoutFeedback
-          onPressIn={() => !disabled ? setColor(COLOR_PRESSED) : null}
-          onPressOut={() => !disabled ? setColor(COLOR_ACTIVE) : null}
+          onPressIn={() => setPressed(true)}
+          onPressOut={() => setPressed(false)}
           onPress={() => !disabled ? onPress() : null}
         >
-          <View style={[styles.container, { backgroundColor }]}>
+          <View
+            style={
+              [
+                styles.container,
+                {
+                  backgroundColor: disabled ? COLOR_DISABLED : pressed ? COLOR_PRESSED : COLOR_ACTIVE
+                },
+              ]
+            }
+          >
             <Text style={styles.title}>{title}</Text>
           </View>
         </TouchableWithoutFeedback>

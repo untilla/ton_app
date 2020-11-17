@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   StyleSheet,
   ViewStyle,
   View,
   TextStyle,
   Text,
-  KeyboardAvoidingView, TouchableOpacity,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  Keyboard,
 } from 'react-native';
 import BackButton from './components/BackButton';
-import { STATUS_BAR_HEIGHT } from '../../constants/globals';
+import { EMAIL_RULE, PHONE_RULE, STATUS_BAR_HEIGHT, STR_RULE, TG_RULE } from '../../constants/globals';
 import UserPhoto from './components/UserPhoto';
 import ExtTextInput from '../../components/UIKit/ExtTextInput';
 import SubmitButton from '../../components/UIKit/SubmitButton';
@@ -19,6 +21,18 @@ const EditProfile: React.FC = (): JSX.Element => {
   const [phone, setPhone] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [telegram, setTelegram] = useState<string>('');
+
+  const validate = useCallback((): boolean => {
+    return (
+      EMAIL_RULE.test(email) &&
+      PHONE_RULE.test(phone) &&
+      TG_RULE.test(telegram) &&
+      STR_RULE.test(firstName) &&
+      STR_RULE.test(lastName)
+    );
+  }, [firstName, lastName, email, telegram, phone]);
+
+  const submitHandler = useCallback((): void => Keyboard.dismiss(), []);
   return (
     <KeyboardAvoidingView
       contentContainerStyle={styles.container}
@@ -61,7 +75,7 @@ const EditProfile: React.FC = (): JSX.Element => {
           placeholder={'Telegram'}
           onChangeText={setTelegram}
           value={telegram}
-          keyboardType={'twitter'}
+          // keyboardType={'twitter'}
           containerStyle={{ marginBottom: 18 }}
           extra={(
             <TouchableOpacity>
@@ -72,9 +86,9 @@ const EditProfile: React.FC = (): JSX.Element => {
       </View>
       <SubmitButton
         containerStyle={styles.submitContainer}
-        onPress={() => alert('OK!')}
+        onPress={submitHandler}
         title={'Save'}
-        disabled={false}
+        disabled={!validate()}
       />
     </KeyboardAvoidingView>
   );
