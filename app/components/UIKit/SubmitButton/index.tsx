@@ -1,25 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   TextStyle,
   ViewStyle,
   View,
-  Text,
+  Text, TouchableWithoutFeedback,
 } from 'react-native';
-import { ISubmitButtonProps } from './types';
+import { COLOR_ACTIVE, COLOR_DISABLED, COLOR_PRESSED, ISubmitButtonProps } from './types';
 
 const SubmitButton: React.FC<ISubmitButtonProps> =
   ({
      onPress,
      title,
      disabled = false,
-     containerStyle= {},
+     containerStyle = {},
    }): JSX.Element => {
+    const [backgroundColor, setColor] = useState<string>(disabled ? COLOR_DISABLED : COLOR_ACTIVE);
     return (
       <View style={containerStyle}>
-        <View style={styles.container}>
-          <Text style={styles.title}>{title}</Text>
-        </View>
+        <TouchableWithoutFeedback
+          onPressIn={() => !disabled ? setColor(COLOR_PRESSED) : null}
+          onPressOut={() => !disabled ? setColor(COLOR_ACTIVE) : null}
+          onPress={() => !disabled ? onPress() : null}
+        >
+          <View style={[styles.container, { backgroundColor }]}>
+            <Text style={styles.title}>{title}</Text>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
     );
   };
@@ -31,7 +38,6 @@ interface IStyle {
 
 const styles = StyleSheet.create<IStyle>({
   container: {
-    backgroundColor: '#0088CC',
     borderRadius: 4,
     height: 48,
     justifyContent: 'center',

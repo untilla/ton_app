@@ -5,7 +5,7 @@ import {
   View,
   TextStyle,
   Text,
-  KeyboardAvoidingView,
+  KeyboardAvoidingView, TouchableOpacity,
 } from 'react-native';
 import BackButton from './components/BackButton';
 import { STATUS_BAR_HEIGHT } from '../../constants/globals';
@@ -63,12 +63,18 @@ const EditProfile: React.FC = (): JSX.Element => {
           value={telegram}
           keyboardType={'twitter'}
           containerStyle={{ marginBottom: 18 }}
+          extra={(
+            <TouchableOpacity>
+              <Text style={styles.connect}>Connect</Text>
+            </TouchableOpacity>
+          )}
         />
       </View>
       <SubmitButton
         containerStyle={styles.submitContainer}
-        onPress={() => {}}
+        onPress={() => alert('OK!')}
         title={'Save'}
+        disabled={false}
       />
     </KeyboardAvoidingView>
   );
@@ -79,6 +85,7 @@ interface IStyle {
   title: TextStyle,
   inputsContainer: ViewStyle,
   submitContainer: ViewStyle,
+  connect: TextStyle,
 }
 
 const styles = StyleSheet.create<IStyle>({
@@ -102,7 +109,14 @@ const styles = StyleSheet.create<IStyle>({
   submitContainer: {
     marginLeft: 16,
     marginRight: 16,
-    marginTop: 32,
+    marginTop: 44,
+  },
+  connect: {
+    fontFamily: 'PT_Root_UI_Medium',
+    fontSize: 16,
+    lineHeight: 20,
+    letterSpacing: 0.25,
+    color: '#0088CC',
   }
 });
 

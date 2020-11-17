@@ -14,8 +14,9 @@ const ExtTextInput: React.FC<IExtTextInputProps> =
      onChangeText,
      value,
      placeholder,
-     keyboardType= 'default',
+     keyboardType = 'default',
      containerStyle = {},
+     extra,
    }): JSX.Element => {
     const [borderColor, setBorderColor] = useState<string>(INPUT_BLUR_COLOR);
     return (
@@ -34,6 +35,10 @@ const ExtTextInput: React.FC<IExtTextInputProps> =
               onBlur={(): void => setBorderColor(INPUT_BLUR_COLOR)}
               keyboardType={keyboardType}
             />
+            {
+              extra &&
+              (<View style={styles.extraContainer}>{extra}</View>)
+            }
           </View>
         </View>
       </View>
@@ -45,6 +50,7 @@ interface IStyle {
   hint: TextStyle,
   inputContainer: ViewStyle,
   textInput: TextStyle,
+  extraContainer: ViewStyle,
 }
 
 const styles = StyleSheet.create<IStyle>({
@@ -67,6 +73,11 @@ const styles = StyleSheet.create<IStyle>({
     letterSpacing: 0.5,
     fontFamily: 'PT_Root_UI_Regular',
     marginBottom: 8,
+    flex: 1,
+  },
+  extraContainer: {
+    paddingLeft: 8,
+    justifyContent: 'center',
   },
 });
 

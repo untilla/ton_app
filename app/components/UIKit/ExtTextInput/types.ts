@@ -1,4 +1,5 @@
 import { KeyboardTypeOptions, ViewStyle } from 'react-native';
+import { ReactNode } from 'react';
 
 export interface IExtTextInputProps {
   value: string,
@@ -6,6 +7,7 @@ export interface IExtTextInputProps {
   onChangeText: (text: string) => void,
   keyboardType?: KeyboardTypeOptions,
   containerStyle?: ViewStyle,
+  extra?: string | ReactNode,
 }
 
 export const INPUT_FOCUS_COLOR = '#000000';
