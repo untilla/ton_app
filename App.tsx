@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from 'react';
-import { SafeAreaView, StyleSheet, ViewStyle } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet, ViewStyle, View } from 'react-native';
 import * as Font from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
 import { AppLoading } from 'expo';
-import { NavigationContainer, DefaultTheme, Theme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import EditProfile from './app/screens/EditProfile';
 import BackButton from './app/screens/EditProfile/components/BackButton';
@@ -11,13 +12,13 @@ const Stack = createStackNavigator();
 
 const App: React.FC = (): JSX.Element => {
   const [loaded, setLoaded] = useState<boolean>(false);
-  const AppTheme = useMemo((): Theme => ({
+  const AppTheme = {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
-      background: 'rgb(255, 255, 255)',
+      background: 'white',
     },
-  }), []);
+  };
   const loadResources = async (): Promise<any> => Promise.all([
     Font.loadAsync({
       'PT_Root_UI_Bold': require('./assets/fonts/PT_Root_UI_Bold.ttf'),
@@ -38,21 +39,24 @@ const App: React.FC = (): JSX.Element => {
   }
 
   return (
-    <NavigationContainer theme={AppTheme}>
-      <SafeAreaView style={styles.container}>
-        <Stack.Navigator
-          initialRouteName={'EditProfile'}
-        >
-          <Stack.Screen
-            name={'EditProfile'}
-            component={EditProfile}
-            options={{
-              header: () => <BackButton onPress={() => {}}/>
-            }}
-          />
-        </Stack.Navigator>
-      </SafeAreaView>
-    </NavigationContainer>
+    <View style={[styles.container, { backgroundColor: AppTheme.colors.background }]}>
+      <NavigationContainer theme={AppTheme}>
+        <SafeAreaView style={styles.container}>
+          <StatusBar style={'auto'}/>
+          <Stack.Navigator
+            initialRouteName={'EditProfile'}
+          >
+            <Stack.Screen
+              name={'EditProfile'}
+              component={EditProfile}
+              options={{
+                header: () => (<BackButton onPress={() => {}}/>),
+              }}
+            />
+          </Stack.Navigator>
+        </SafeAreaView>
+      </NavigationContainer>
+    </View>
   );
 };
 
@@ -63,7 +67,6 @@ interface IStyle {
 const styles = StyleSheet.create<IStyle>({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
 });
 

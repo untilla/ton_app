@@ -46,6 +46,7 @@ const ExtTextInput = forwardRef<React.RefObject<TextInput> | any, IExtTextInputP
               onSubmitEditing={onSubmitEditing}
               ref={ref}
               autoFocus={autoFocus}
+              placeholderTextColor={'#96A1A7'}
             />
             {
               extra &&
