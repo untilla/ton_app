@@ -6,7 +6,7 @@ import { AppLoading } from 'expo';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import EditProfile from './app/screens/EditProfile';
-import BackButton from './app/screens/EditProfile/components/BackButton';
+import BackButton from './app/components/BackButton';
 
 const Stack = createStackNavigator();
 

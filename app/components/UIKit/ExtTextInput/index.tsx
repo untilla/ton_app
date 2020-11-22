@@ -5,7 +5,10 @@ import {
   ViewStyle,
   View,
   Text,
-  TextInput, NativeSyntheticEvent, TextInputFocusEventData,
+  TextInput,
+  NativeSyntheticEvent,
+  TextInputFocusEventData,
+  Platform,
 } from 'react-native';
 import { IExtTextInputProps, INPUT_BLUR_COLOR, INPUT_FOCUS_COLOR } from './types';
 
@@ -32,7 +35,10 @@ const ExtTextInput = forwardRef<React.RefObject<TextInput> | any, IExtTextInputP
           <Text style={styles.hint}>{!!value.length ? placeholder : ' '}</Text>
           <View style={styles.inputContainer}>
             <TextInput
-              style={styles.textInput}
+              style={[styles.textInput, Platform.OS === 'web' && {
+                // @ts-ignore
+                outlineColor: 'transparent',
+              }]}
               placeholder={placeholder}
               value={value}
               onChangeText={onChangeText}
