@@ -1,4 +1,10 @@
-import { KeyboardTypeOptions, ViewStyle } from 'react-native';
+import {
+  KeyboardTypeOptions,
+  NativeSyntheticEvent,
+  ReturnKeyTypeOptions, TextInputFocusEventData,
+  TextInputSubmitEditingEventData,
+  ViewStyle
+} from 'react-native';
 import { ReactNode } from 'react';
 
 export interface IExtTextInputProps {
@@ -8,6 +14,11 @@ export interface IExtTextInputProps {
   keyboardType?: KeyboardTypeOptions,
   containerStyle?: ViewStyle,
   extra?: string | ReactNode,
+  returnKeyType?: ReturnKeyTypeOptions,
+  onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void,
+  autoFocus?: boolean,
+  error?: boolean,
+  onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void,
 }
 
 export const INPUT_FOCUS_COLOR = '#000000';

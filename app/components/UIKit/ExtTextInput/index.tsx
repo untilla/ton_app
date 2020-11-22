@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import {
   StyleSheet,
   TextStyle,
   ViewStyle,
   View,
   Text,
-  TextInput,
+  TextInput, NativeSyntheticEvent, TextInputFocusEventData,
 } from 'react-native';
 import { IExtTextInputProps, INPUT_BLUR_COLOR, INPUT_FOCUS_COLOR } from './types';
 
-const ExtTextInput: React.FC<IExtTextInputProps> =
+const ExtTextInput = forwardRef<React.RefObject<TextInput> | any, IExtTextInputProps>(
   ({
      onChangeText,
      value,
@@ -17,12 +17,17 @@ const ExtTextInput: React.FC<IExtTextInputProps> =
      keyboardType = 'default',
      containerStyle = {},
      extra,
-   }): JSX.Element => {
-    const [borderColor, setBorderColor] = useState<string>(INPUT_BLUR_COLOR);
+     returnKeyType,
+     onSubmitEditing,
+     autoFocus,
+     error= false,
+     onBlur = () => {},
+   }: IExtTextInputProps, ref?) => {
+    const [focused, setFocused] = useState<boolean>(false);
     return (
       <View style={containerStyle}>
         <View
-          style={[styles.container, { borderColor }]}
+          style={[styles.container, { borderColor: focused ? INPUT_FOCUS_COLOR : error ? 'red' : INPUT_BLUR_COLOR }]}
         >
           <Text style={styles.hint}>{!!value.length ? placeholder : ' '}</Text>
           <View style={styles.inputContainer}>
@@ -31,9 +36,16 @@ const ExtTextInput: React.FC<IExtTextInputProps> =
               placeholder={placeholder}
               value={value}
               onChangeText={onChangeText}
-              onFocus={(): void => setBorderColor(INPUT_FOCUS_COLOR)}
-              onBlur={(): void => setBorderColor(INPUT_BLUR_COLOR)}
+              onFocus={(): void => setFocused(true)}
+              onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>): void => {
+                setFocused(false);
+                onBlur(e);
+              }}
               keyboardType={keyboardType}
+              returnKeyType={returnKeyType}
+              onSubmitEditing={onSubmitEditing}
+              ref={ref}
+              autoFocus={autoFocus}
             />
             {
               extra &&
@@ -43,7 +55,7 @@ const ExtTextInput: React.FC<IExtTextInputProps> =
         </View>
       </View>
     );
-  };
+  });
 
 interface IStyle {
   container: ViewStyle,

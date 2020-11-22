@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { SafeAreaView, StyleSheet, ViewStyle } from 'react-native';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
+import { NavigationContainer, DefaultTheme, Theme } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import EditProfile from './app/screens/EditProfile';
-import { STATUS_BAR_HEIGHT } from './app/constants/globals';
+import BackButton from './app/screens/EditProfile/components/BackButton';
+
+const Stack = createStackNavigator();
 
 const App: React.FC = (): JSX.Element => {
   const [loaded, setLoaded] = useState<boolean>(false);
+  const AppTheme = useMemo((): Theme => ({
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: 'rgb(255, 255, 255)',
+    },
+  }), []);
   const loadResources = async (): Promise<any> => Promise.all([
     Font.loadAsync({
       'PT_Root_UI_Bold': require('./assets/fonts/PT_Root_UI_Bold.ttf'),
@@ -28,32 +38,33 @@ const App: React.FC = (): JSX.Element => {
   }
 
   return (
-    <View style={styles.container}>
-      <StatusBar style='auto'/>
-      <EditProfile/>
-      <View style={styles.statusBar}/>
-    </View>
+    <NavigationContainer theme={AppTheme}>
+      <SafeAreaView style={styles.container}>
+        <Stack.Navigator
+          initialRouteName={'EditProfile'}
+        >
+          <Stack.Screen
+            name={'EditProfile'}
+            component={EditProfile}
+            options={{
+              header: () => <BackButton onPress={() => {}}/>
+            }}
+          />
+        </Stack.Navigator>
+      </SafeAreaView>
+    </NavigationContainer>
   );
 };
 
 interface IStyle {
   container: ViewStyle,
-  statusBar: ViewStyle,
 }
 
 const styles = StyleSheet.create<IStyle>({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-  },
-  statusBar: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    right: 0,
-    height: STATUS_BAR_HEIGHT,
     backgroundColor: 'white',
-  }
+  },
 });
 
 export default App;
