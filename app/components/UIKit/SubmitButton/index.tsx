@@ -4,7 +4,8 @@ import {
   TextStyle,
   ViewStyle,
   View,
-  Text, TouchableWithoutFeedback,
+  Text,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { COLOR_ACTIVE, COLOR_DISABLED, COLOR_PRESSED, ISubmitButtonProps } from './types';
 
